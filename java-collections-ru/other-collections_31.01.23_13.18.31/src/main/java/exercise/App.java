@@ -10,7 +10,7 @@ class App {
         return super.equals(obj);
     }
 
-    public static LinkedHashMap genDiff(Map<String, Object> data1, Map<String, Object> data2) {
+    public static Map genDiff(Map<String, Object> data1, Map<String, Object> data2) {
 
         LinkedHashMap<String, Object> tempMap = new LinkedHashMap<>();
 
@@ -35,8 +35,8 @@ class App {
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (x, y) -> x,
                     LinkedHashMap::new));
 
-        System.out.println("After for");
-        System.out.println(sortedTempMap.toString());
+        //System.out.println("After for");
+        //System.out.println(sortedTempMap.toString());
 
         return sortedTempMap;
     }
