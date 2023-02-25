@@ -10,6 +10,9 @@ public class App {
 
     public static List<String> buildApartmentsList(List<Home> apartments, int topUp) {
 
+        if (apartments.size() == 0) {
+            return new ArrayList<>();
+        }
         var temp = apartments.stream().sorted(Home::compareTo).toList();
         List<String> result = new ArrayList<>();
         for (int i = 0; i < topUp; i++) {
