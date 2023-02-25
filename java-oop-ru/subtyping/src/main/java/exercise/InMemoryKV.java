@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 // BEGIN
 public class InMemoryKV implements KeyValueStorage{
-    private Map<String, String> map;
+    private final Map<String, String> map;
 
     public InMemoryKV(Map<String, String> map) {
         this.map = new HashMap<>(map);
@@ -31,7 +31,7 @@ public class InMemoryKV implements KeyValueStorage{
 
     @Override
     public Map<String, String> toMap() {
-        return map;
+        return new HashMap<>(map);
     }
 }
 // END
