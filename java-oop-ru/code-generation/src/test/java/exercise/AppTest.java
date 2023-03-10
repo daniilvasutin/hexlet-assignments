@@ -50,10 +50,10 @@ class ValidationTest {
         Car car = new Car(1, "bmv", "x5", "black", owner);
         App.save(tempPath, car);
         String actualContent = readFile(tempPath);
-//        Map<String, Object> actual = objectMapper.readValue(actualContent, HashMap.class);
+        Map<String, Object> actual = objectMapper.readValue(actualContent, HashMap.class);
         String expectedContent = readFile(getFixturePath("expected1.json"));
         Map<String, Object> expected = objectMapper.readValue(expectedContent, HashMap.class);
-//        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
