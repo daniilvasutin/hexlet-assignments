@@ -34,24 +34,38 @@ public class UserController implements CrudHandler {
     public void create(Context ctx) {
 
         // BEGIN
-        String body = ctx.body();
-        User user = DB.json().toBean(User.class, body);
+        User user = ctx.bodyValidator(User.class)
+                .check(it -> it.getFirstName().length() > 0, "First name can not be empty")
+                .check(it -> it.getLastName().length() > 0, "Last name can not be empty")
+                .check(it -> EmailValidator.getInstance().isValid(it.getEmail()), "Should be valid email")
+                .check(it -> StringUtils.isNumeric(it.getPassword()), "Password must contains only digits")
+                .check(it -> it.getPassword().length() >= 4, "Password must contain at least 4 characters")
+                .get();
+
         user.save();
         // END
     };
 
     public void update(Context ctx, String id) {
         // BEGIN
+//        String body = ctx.body();
+//        User ctxUser = DB.json().toBean(User.class, body);
+//        new QUser()
+//                .id.eq(Long.parseLong(id))
+//                .asUpdate()
+//                .set("firstName", ctxUser.getFirstName())
+//                .set("lastName", ctxUser.getLastName())
+//                .set("email", ctxUser.getEmail())
+//                .set("password", ctxUser.getPassword())
+//                .update();
+
+        //or
+
         String body = ctx.body();
-        User ctxUser = DB.json().toBean(User.class, body);
-        new QUser()
-                .id.eq(Long.parseLong(id))
-                .asUpdate()
-                .set("firstName", ctxUser.getFirstName())
-                .set("lastName", ctxUser.getLastName())
-                .set("email", ctxUser.getEmail())
-                .set("password", ctxUser.getPassword())
-                .update();
+        User updatedUser = DB.json().toBean(User.class, body);
+        updatedUser.setId(id);
+        updatedUser.update();
+
         // END
     };
 
