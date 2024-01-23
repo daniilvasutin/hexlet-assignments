@@ -6,7 +6,7 @@ import exercise.dto.TaskCreateDTO;
 import exercise.dto.TaskDTO;
 import exercise.dto.TaskUpdateDTO;
 import exercise.mapper.TaskMapper;
-import exercise.model.Task;
+//import exercise.model.Task;
 import exercise.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,7 +49,8 @@ public class TasksController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDTO show(@PathVariable Long id) {
-        var task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
         var taskDTO = taskMapper.map(task);
 //        taskDTO.setAssigneeId(task.getAssignee().getId());
         return taskDTO;
@@ -73,7 +74,8 @@ public class TasksController {
 //        taskRepository.save(task);
 //        var taskDTO = taskMapper.map(task);
 
-        var task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
         task.setTitle(updateDTO.getTitle());
         task.setDescription(updateDTO.getDescription());
         task.setAssignee(userRepository.getById(updateDTO.getAssigneeId()));
@@ -97,8 +99,10 @@ public class TasksController {
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@PathVariable long id) {
-        var task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
-        var user = userRepository.findByEmail(task.getAssignee().getEmail()).orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
+        var task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
+        var user = userRepository.findByEmail(task.getAssignee().getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
         user.removeTask(task);
         userRepository.save(user);
     }
